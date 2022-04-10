@@ -1,13 +1,13 @@
 package com.example.notes.ui;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +20,9 @@ import com.example.notes.domain.Note;
 import java.util.List;
 
 public class NotesListFragment extends Fragment {
+
+    static final String NOTE_CLICKED_KEY = "NOTE_CLICKED_KEY";
+    static final String SELECTED_NOTE = "SELECTED_NOTE";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -43,14 +46,20 @@ public class NotesListFragment extends Fragment {
         for (Note note : notes) {
             View itemView = getLayoutInflater().inflate(R.layout.item_note, container, false);
 
-            itemView.findViewById(R.id.root).setOnClickListener(view1 -> Toast.makeText(NotesListFragment.this.requireContext(), note.getTitle(), Toast.LENGTH_SHORT).show());
+            itemView.findViewById(R.id.root).setOnClickListener(view1 -> {
+                if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable(SELECTED_NOTE, note);
+                    getParentFragmentManager()
+                            .setFragmentResult(NOTE_CLICKED_KEY, bundle);
+                } else NoteDetailsActivity.show(requireContext(), note);
+            });
 
             TextView titleNote = itemView.findViewById(R.id.title);
             TextView detailNote = itemView.findViewById(R.id.detail);
 
             titleNote.setText(note.getTitle());
             detailNote.setText(note.getDetail());
-
 
             container.addView(itemView);
         }
