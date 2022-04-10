@@ -20,12 +20,35 @@
         android:id="@+id/detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:lines="20"
+        android:lines="15"
         android:layout_margin="@dimen/detail_margin"
         android:textSize="@dimen/detail_text_size"
         app:layout_constraintTop_toBottomOf="@+id/title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        tools:text="@string/content1" />
+
+    <TextView
+        android:id="@+id/date_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/detail_margin"
+        android:textSize="@dimen/detail_text_size"
+        app:layout_constraintTop_toBottomOf="@+id/detail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="@string/date" />
+
+    <DatePicker
+        android:id="@+id/date_picker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        android:startYear="2022"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detail"
         tools:text="@string/content1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

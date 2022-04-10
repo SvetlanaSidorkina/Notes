@@ -2,6 +2,7 @@ package com.example.notes.ui;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,8 @@ public class NoteDetailsFragment extends Fragment {
     private static final String ARG_NOTE = "ARG_NOTE";
     private TextView title;
     private TextView detail;
+    private TextView dateNote;
+    private DatePicker datePicker;
 
     public static NoteDetailsFragment newInstance(Note note) {
 
@@ -37,6 +40,8 @@ public class NoteDetailsFragment extends Fragment {
 
         title = view.findViewById(R.id.title);
         detail = view.findViewById(R.id.detail);
+        datePicker = view.findViewById(R.id.date_picker);
+        dateNote = view.findViewById(R.id.date_text);
 
         getParentFragmentManager()
                 .setFragmentResultListener(NotesListFragment.NOTE_CLICKED_KEY, getViewLifecycleOwner(), (requestKey, result) -> {
@@ -49,11 +54,13 @@ public class NoteDetailsFragment extends Fragment {
             Note note = getArguments().getParcelable(ARG_NOTE);
             showNote(note);
         }
+
     }
 
     private void showNote(Note note) {
         title.setText(note.getTitle());
         detail.setText(note.getDetail());
+        datePicker.init(2022, 0, 1, (datePicker, dayOfMonth, monthOfYear, year) -> dateNote.setText("Дата: " + dayOfMonth + "." + (monthOfYear + 1) + "." + year));
     }
 
 }

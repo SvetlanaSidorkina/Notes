@@ -13,4 +13,5 @@
     <string name="content5">Содержание заметки 5</string>
 
     <string name="notes">Заметки</string>
+    <string name="date">Дата</string>
 </resources>
