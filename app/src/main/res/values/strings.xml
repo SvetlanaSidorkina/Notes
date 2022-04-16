@@ -17,4 +17,7 @@
     <string name="save_btn">сохранить</string>
     <string name="back_btn">назад</string>
     <string name="add_button_text">+</string>
+    <string name="settings">Настройки</string>
+    <string name="info">О приложении</string>
+    <string name="delete">Удалить</string>
 </resources>

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,12 +63,13 @@ public class NotesListFragment extends Fragment {
         }
 
         Button addButton = view.findViewById(R.id.add);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(requireContext(), "добавить", Toast.LENGTH_SHORT).show();
-            }
-        });
+        addButton.setOnClickListener(view12 -> Toast.makeText(requireContext(), "добавить", Toast.LENGTH_SHORT).show());
 
-    }
+        Button menuButton = view.findViewById(R.id.menu_button);
+        menuButton.setOnClickListener(view13 -> Toast.makeText(requireContext(), "Меню", Toast.LENGTH_SHORT).show());
+
+        ImageButton delete = view.findViewById(R.id.delete_button);
+        delete.setOnClickListener(view14 -> Toast.makeText(requireContext(), "Удалить", Toast.LENGTH_SHORT).show());
+     }
+
 }
