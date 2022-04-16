@@ -1,13 +1,14 @@
 package com.example.notes.ui;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,23 +47,27 @@ public class NotesListFragment extends Fragment {
         for (Note note : notes) {
             View itemView = getLayoutInflater().inflate(R.layout.item_note, container, false);
 
-            itemView.findViewById(R.id.root).setOnClickListener(view1 -> {
-                if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable(SELECTED_NOTE, note);
-                    getParentFragmentManager()
-                            .setFragmentResult(NOTE_CLICKED_KEY, bundle);
-                } else NoteDetailsActivity.show(requireContext(), note);
-            });
+            itemView.findViewById(R.id.root).setOnClickListener(view1 -> getParentFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, NoteDetailsFragment.newInstance(note))
+                    .addToBackStack("note")
+                    .commit());
 
             TextView titleNote = itemView.findViewById(R.id.title);
-            TextView detailNote = itemView.findViewById(R.id.detail);
 
             titleNote.setText(note.getTitle());
-            detailNote.setText(note.getDetail());
 
             container.addView(itemView);
+
         }
+
+        Button addButton = view.findViewById(R.id.add);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(requireContext(), "добавить", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 }

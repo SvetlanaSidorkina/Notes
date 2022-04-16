@@ -14,4 +14,7 @@
 
     <string name="notes">Заметки</string>
     <string name="date">Дата</string>
+    <string name="save_btn">сохранить</string>
+    <string name="back_btn">назад</string>
+    <string name="add_button_text">+</string>
 </resources>

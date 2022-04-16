@@ -23,7 +23,24 @@
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"/>
+            android:orientation="vertical">
+
+        </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="bottom|end">
+
+        <Button
+            android:id="@+id/add"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="@string/add_button_text"
+            android:textSize="@dimen/add_button_text_size"/>
+    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
