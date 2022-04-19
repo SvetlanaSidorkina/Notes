@@ -42,6 +42,15 @@ public class NoteDetailsFragment extends Fragment {
         detail = view.findViewById(R.id.detail);
 
         Toolbar toolbar = view.findViewById(R.id.toolbar);
+
+        toolbar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.action_search) {
+                Toast.makeText(requireContext(), "поиск", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            return false;
+        });
+
         toolbar.setNavigationOnClickListener(view1 -> getParentFragmentManager()
                 .popBackStack());
 

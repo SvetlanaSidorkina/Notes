@@ -20,4 +20,11 @@
     <string name="settings">Настройки</string>
     <string name="info">О приложении</string>
     <string name="delete">Удалить</string>
+    <string name="search">Поиск</string>
+    <string name="action_notes">Заметки</string>
+    <string name="action_fragment">Содержание заметки</string>
+    <string name="drawer_open">open_drawer</string>
+    <string name="drawer_close">cllose_drawer</string>
+    <string name="user_first_name">Имя пользователя</string>
+    <string name="Ssettings">Настройки</string>
 </resources>
