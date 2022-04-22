@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
@@ -58,6 +59,14 @@ public class NotesListFragment extends Fragment {
                     return true;
                 case R.id.action_info:
                     Toast.makeText(requireContext(), "о приложении", Toast.LENGTH_SHORT).show();
+                    return true;
+                case R.id.action_exit:
+                    view.findViewById(R.id.action_exit).setOnClickListener(view13 -> new AlertDialog.Builder(requireContext())
+                            .setMessage("Действительно хотите выйти из приложения?")
+                            .setCancelable(false)
+                            .setPositiveButton("Да", (dialogInterface, i) -> Toast.makeText(requireContext(), "да", Toast.LENGTH_SHORT).show())
+                            .setNegativeButton("Нет", (dialogInterface, i) -> Toast.makeText(requireContext(), "Отлично, продолжим!", Toast.LENGTH_LONG).show())
+                            .show());
                     return true;
             }
             return false;

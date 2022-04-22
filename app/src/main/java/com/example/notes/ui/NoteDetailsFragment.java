@@ -1,5 +1,6 @@
 package com.example.notes.ui;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -8,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
@@ -34,6 +36,7 @@ public class NoteDetailsFragment extends Fragment {
         super(R.layout.fragment_note_details);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -44,9 +47,17 @@ public class NoteDetailsFragment extends Fragment {
         Toolbar toolbar = view.findViewById(R.id.toolbar);
 
         toolbar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.action_search) {
-                Toast.makeText(requireContext(), "поиск", Toast.LENGTH_SHORT).show();
-                return true;
+            switch (item.getItemId()) {
+                case R.id.action_search:
+                    Toast.makeText(requireContext(), "поиск", Toast.LENGTH_SHORT).show();
+                    return true;
+                case R.id.action_exit:
+                    view.findViewById(R.id.action_exit).setOnClickListener(view13 -> new AlertDialog.Builder(requireContext())
+                            .setMessage("Действительно хотите выйти из приложения?")
+                            .setPositiveButton("Да", (dialogInterface, i) -> Toast.makeText(requireContext(), "да", Toast.LENGTH_SHORT).show())
+                            .setNegativeButton("Нет", (dialogInterface, i) -> Toast.makeText(requireContext(), "Отлично, продолжим!", Toast.LENGTH_LONG).show())
+                            .show());
+                    return true;
             }
             return false;
         });
