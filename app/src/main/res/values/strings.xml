@@ -28,4 +28,8 @@
     <string name="user_first_name">Имя пользователя</string>
     <string name="Ssettings">Настройки</string>
     <string name="exit">Выход</string>
+    <string name="exit_question">Действительно хотите выйти из приложения?</string>
+    <string name="exit_pozitive_answer">да</string>
+    <string name="exit_negative_answer">Нет</string>
+    <string name="exit_negative_answer_toast">Отлично, продолжим!</string>
 </resources>

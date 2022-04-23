@@ -94,7 +94,9 @@ public class NotesListFragment extends Fragment {
         }
 
         Button addButton = view.findViewById(R.id.add);
-        addButton.setOnClickListener(view12 -> Toast.makeText(requireContext(), "добавить", Toast.LENGTH_SHORT).show());
+        addButton.setOnClickListener(view12 -> {
+            Toast.makeText(requireContext(), "добавить", Toast.LENGTH_SHORT).show();
+        });
 
         ImageButton delete = view.findViewById(R.id.delete_button);
         delete.setOnClickListener(view14 -> Toast.makeText(requireContext(), "Удалить", Toast.LENGTH_SHORT).show());

@@ -53,9 +53,9 @@ public class NoteDetailsFragment extends Fragment {
                     return true;
                 case R.id.action_exit:
                     view.findViewById(R.id.action_exit).setOnClickListener(view13 -> new AlertDialog.Builder(requireContext())
-                            .setMessage("Действительно хотите выйти из приложения?")
-                            .setPositiveButton("Да", (dialogInterface, i) -> Toast.makeText(requireContext(), "да", Toast.LENGTH_SHORT).show())
-                            .setNegativeButton("Нет", (dialogInterface, i) -> Toast.makeText(requireContext(), "Отлично, продолжим!", Toast.LENGTH_LONG).show())
+                            .setMessage(R.string.exit_question)
+                            .setPositiveButton(R.string.exit_pozitive_answer, (dialogInterface, i) -> Toast.makeText(requireContext(), "Да", Toast.LENGTH_SHORT).show())
+                            .setNegativeButton(R.string.exit_negative_answer, (dialogInterface, i) -> Toast.makeText(requireContext(), R.string.exit_negative_answer_toast, Toast.LENGTH_LONG).show())
                             .show());
                     return true;
             }

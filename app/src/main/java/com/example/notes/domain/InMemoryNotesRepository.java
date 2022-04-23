@@ -10,6 +10,7 @@ import java.util.List;
 public class InMemoryNotesRepository implements NotesRepository {
 
     private static NotesRepository INSTANCE;
+    ArrayList<Note> result = new ArrayList<>();
 
     public static NotesRepository getInstance(Context context) {
         if (INSTANCE == null) {
@@ -26,7 +27,6 @@ public class InMemoryNotesRepository implements NotesRepository {
 
     @Override
     public List<Note> getAll() {
-        ArrayList<Note> result = new ArrayList<>();
 
         result.add(new Note(context.getString(R.string.title1), context.getString(R.string.content1)));
         result.add(new Note(context.getString(R.string.title2), context.getString(R.string.content2)));
@@ -39,6 +39,6 @@ public class InMemoryNotesRepository implements NotesRepository {
 
     @Override
     public void add(Note note) {
-
+        result.add(note);
     }
 }
