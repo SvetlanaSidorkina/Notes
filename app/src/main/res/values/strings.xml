@@ -1,3 +1,38 @@
 <resources>
     <string name="app_name">Notes</string>
+    <string name="title1">Заметка 1</string>
+    <string name="title2">Заметка 2</string>
+    <string name="title3">Заметка 3</string>
+    <string name="title4">Заметка 4</string>
+    <string name="title5">Заметка 5</string>
+
+    <string name="content1">Содержание заметки 1</string>
+    <string name="content2">Содержание заметки 2</string>
+    <string name="content3">Содержание заметки 3</string>
+    <string name="content4">Содержание заметки 4</string>
+    <string name="content5">Содержание заметки 5</string>
+
+    <string name="notes">Заметки</string>
+    <string name="date">Дата</string>
+    <string name="save_btn">сохранить</string>
+    <string name="back_btn">назад</string>
+    <string name="add_button_text">+</string>
+    <string name="settings">Настройки</string>
+    <string name="info">О приложении</string>
+    <string name="delete">Удалить</string>
+    <string name="search">Поиск</string>
+    <string name="action_notes">Заметки</string>
+    <string name="action_fragment">Содержание заметки</string>
+    <string name="drawer_open">open_drawer</string>
+    <string name="drawer_close">cllose_drawer</string>
+    <string name="user_first_name">Имя пользователя</string>
+    <string name="Ssettings">Настройки</string>
+    <string name="exit">Выход</string>
+    <string name="exit_question">Действительно хотите выйти из приложения?</string>
+    <string name="exit_pozitive_answer">да</string>
+    <string name="exit_negative_answer">Нет</string>
+    <string name="exit_negative_answer_toast">Отлично, продолжим!</string>
+    <string name="action_add">Введите название заметки</string>
+    <string name="action_ok">OK</string>
+    <string name="date_text">01.01.2001</string>
 </resources>
