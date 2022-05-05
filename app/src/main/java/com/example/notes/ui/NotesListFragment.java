@@ -6,9 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.notes.R;
 import com.example.notes.domain.InMemoryNotesRepository;
@@ -61,45 +60,51 @@ public class NotesListFragment extends Fragment {
                     Toast.makeText(requireContext(), "о приложении", Toast.LENGTH_SHORT).show();
                     return true;
                 case R.id.action_exit:
-                    view.findViewById(R.id.action_exit).setOnClickListener(view13 -> new AlertDialog.Builder(requireContext())
-                            .setMessage("Действительно хотите выйти из приложения?")
+                    view.findViewById(R.id.action_exit).setOnClickListener(view13 -> new AlertDialog.Builder(NotesListFragment.this.requireContext())
+                            .setMessage(R.string.exit_question)
                             .setCancelable(false)
-                            .setPositiveButton("Да", (dialogInterface, i) -> Toast.makeText(requireContext(), "да", Toast.LENGTH_SHORT).show())
-                            .setNegativeButton("Нет", (dialogInterface, i) -> Toast.makeText(requireContext(), "Отлично, продолжим!", Toast.LENGTH_LONG).show())
+                            .setPositiveButton(R.string.exit_pozitive_answer, (dialogInterface, i) -> Toast.makeText(NotesListFragment.this.requireContext(), "да", Toast.LENGTH_SHORT).show())
+                            .setNegativeButton(R.string.exit_negative_answer, (dialogInterface, i) -> Toast.makeText(NotesListFragment.this.requireContext(), R.string.exit_negative_answer_toast, Toast.LENGTH_LONG).show())
                             .show());
                     return true;
             }
             return false;
         });
 
-        List<Note> notes = InMemoryNotesRepository.getInstance(requireContext()).getAll();
+        RecyclerView notesList = view.findViewById(R.id.notes_list);
 
-        LinearLayout container = view.findViewById(R.id.container);
+        notesList.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
 
-        for (Note note : notes) {
-            View itemView = getLayoutInflater().inflate(R.layout.item_note, container, false);
+        NotesAdapter adapter = new NotesAdapter();
 
-            itemView.findViewById(R.id.root).setOnClickListener(view1 -> getParentFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, NoteDetailsFragment.newInstance(note))
-                    .addToBackStack("note")
-                    .commit());
-
-            TextView titleNote = itemView.findViewById(R.id.title);
-
-            titleNote.setText(note.getTitle());
-
-            container.addView(itemView);
-
-        }
-
-        Button addButton = view.findViewById(R.id.add);
-        addButton.setOnClickListener(view12 -> {
-            Toast.makeText(requireContext(), "добавить", Toast.LENGTH_SHORT).show();
+        adapter.setNoteClicked(new NotesAdapter.OnNoteClicked() {
+            @Override
+            public void onNoteClicked(Note note) {
+                getParentFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, NoteDetailsFragment.newInstance(note))
+                        .addToBackStack("note")
+                        .commit();
+            }
         });
 
-        ImageButton delete = view.findViewById(R.id.delete_button);
-        delete.setOnClickListener(view14 -> Toast.makeText(requireContext(), "Удалить", Toast.LENGTH_SHORT).show());
+        notesList.setAdapter(adapter);
+
+        List<Note> notes = InMemoryNotesRepository.getInstance(requireContext()).getAll();
+
+        adapter.setData(notes);
+
+        adapter.notifyDataSetChanged();
+
+        Button addButton = view.findViewById(R.id.add);
+        addButton.setOnClickListener(view12 -> new AlertDialog.Builder(requireContext())
+                .setTitle(R.string.action_add)
+                .setView(R.layout.fragment_dialog)
+                .setPositiveButton(R.string.action_ok, (dialogInterface, i) -> getParentFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new NoteDetailsFragment())
+                        .commit())
+                .show());
     }
 
 }

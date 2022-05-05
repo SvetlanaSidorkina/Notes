@@ -32,4 +32,7 @@
     <string name="exit_pozitive_answer">да</string>
     <string name="exit_negative_answer">Нет</string>
     <string name="exit_negative_answer_toast">Отлично, продолжим!</string>
+    <string name="action_add">Введите название заметки</string>
+    <string name="action_ok">OK</string>
+    <string name="date_text">01.01.2001</string>
 </resources>
