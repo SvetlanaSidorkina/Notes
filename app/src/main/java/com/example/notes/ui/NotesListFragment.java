@@ -2,10 +2,13 @@ package com.example.notes.ui;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,7 +20,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.notes.R;
-import com.example.notes.domain.InMemoryNotesRepository;
+import com.example.notes.di.Dependencies;
+import com.example.notes.domain.Callback;
 import com.example.notes.domain.Note;
 
 import java.util.List;
@@ -27,11 +31,13 @@ public class NotesListFragment extends Fragment {
     static final String NOTE_CLICKED_KEY = "NOTE_CLICKED_KEY";
     static final String SELECTED_NOTE = "SELECTED_NOTE";
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_notes_list, container, false);
+    private Note selectedNote;
+    private int selectedPosition;
+    private NotesAdapter adapter;
+    private ProgressBar progressBar;
 
+    public NotesListFragment() {
+        super(R.layout.fragment_notes_list);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -75,7 +81,7 @@ public class NotesListFragment extends Fragment {
 
         notesList.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
 
-        NotesAdapter adapter = new NotesAdapter();
+        adapter = new NotesAdapter(this);
 
         adapter.setNoteClicked(new NotesAdapter.OnNoteClicked() {
             @Override
@@ -86,25 +92,91 @@ public class NotesListFragment extends Fragment {
                         .addToBackStack("note")
                         .commit();
             }
+
+            @Override
+            public void onNoteLongClicked(Note note, int position) {
+                selectedNote = note;
+                selectedPosition = position;
+            }
         });
 
         notesList.setAdapter(adapter);
 
-        List<Note> notes = InMemoryNotesRepository.getInstance(requireContext()).getAll();
+        getParentFragmentManager()
+                .setFragmentResultListener(AddNoteBottomSheetDialogFragment.ADD_KEY_RESULT, getViewLifecycleOwner(), (requestKey, result) -> {
+                    Note note = result.getParcelable(AddNoteBottomSheetDialogFragment.ARG_NOTE);
 
-        adapter.setData(notes);
+                    int index = adapter.addNote(note);
 
-        adapter.notifyDataSetChanged();
+                    adapter.notifyItemInserted(index);
 
-        Button addButton = view.findViewById(R.id.add);
-        addButton.setOnClickListener(view12 -> new AlertDialog.Builder(requireContext())
-                .setTitle(R.string.action_add)
-                .setView(R.layout.fragment_dialog)
-                .setPositiveButton(R.string.action_ok, (dialogInterface, i) -> getParentFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, new NoteDetailsFragment())
-                        .commit())
-                .show());
+                    notesList.smoothScrollToPosition(index);
+                });
+
+        getParentFragmentManager()
+                .setFragmentResultListener(AddNoteBottomSheetDialogFragment.UPDATE_KEY_RESULT, getViewLifecycleOwner(), (requestKey, result) -> {
+                    Note note = result.getParcelable(AddNoteBottomSheetDialogFragment.ARG_NOTE);
+
+                    adapter.replaceNote(note, selectedPosition);
+                    adapter.notifyItemChanged(selectedPosition);
+                });
+
+        view.findViewById(R.id.add).setOnClickListener(view12 -> AddNoteBottomSheetDialogFragment.addInstance()
+                .show(NotesListFragment.this.getParentFragmentManager(), "AddNoteBottomSheetDialogFragment"));
+
+        progressBar = view.findViewById(R.id.progress);
+
+        Dependencies.getNotesRepository().getAll(new Callback<List<Note>>() {
+            @Override
+            public void onSuccess(List<Note> data) {
+                adapter.setData(data);
+
+                adapter.notifyDataSetChanged();
+
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onError(Throwable exception) {
+                progressBar.setVisibility(View.GONE);
+            }
+        });
     }
 
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        MenuInflater menuInflater = requireActivity().getMenuInflater();
+        menuInflater.inflate(R.menu.menu_notes_context, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_edit:
+                AddNoteBottomSheetDialogFragment.editInstance(selectedNote)
+                        .show(NotesListFragment.this.getParentFragmentManager(), "AddNoteBottomSheetDialogFragment");
+                return true;
+            case R.id.action_delete:
+                progressBar.setVisibility(View.VISIBLE);
+
+                Dependencies.getNotesRepository().removeNote(selectedNote, new Callback<Void>() {
+                    @Override
+                    public void onSuccess(Void data) {
+                        progressBar.setVisibility(View.GONE);
+
+                        adapter.removeNote(selectedNote);
+                        adapter.notifyItemRemoved(selectedPosition);
+                    }
+
+                    @Override
+                    public void onError(Throwable exception) {
+
+                    }
+                });
+                return true;
+        }
+        return super.onContextItemSelected(item);
+    }
 }

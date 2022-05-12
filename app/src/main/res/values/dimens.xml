@@ -14,4 +14,5 @@
     <dimen name="date_size">20sp</dimen>
     <dimen name="date_margin_top">8dp</dimen>
     <dimen name="card_elevation">8dp</dimen>
+    <dimen name="title_size_add_note">28dp</dimen>
 </resources>
