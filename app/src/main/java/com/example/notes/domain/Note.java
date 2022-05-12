@@ -4,17 +4,23 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Note implements Parcelable {
 
     public int id;
     private final String title;
-    private final String detail;
+    private String detail;
     private Date createdAt;
 
     public Note(String title, String detail, Date createdAt) {
         this.title = title;
         this.detail = detail;
+        this.createdAt = createdAt;
+    }
+
+    public Note(String title, Date createdAt) {
+        this.title = title;
         this.createdAt = createdAt;
     }
 
@@ -65,4 +71,17 @@ public class Note implements Parcelable {
             return new Note[size];
         }
     };
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Note note = (Note) o;
+        return id == note.id && Objects.equals(title, note.title) && Objects.equals(detail, note.detail) && Objects.equals(createdAt, note.createdAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, detail, createdAt);
+    }
 }

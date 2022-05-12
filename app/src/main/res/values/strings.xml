@@ -35,4 +35,7 @@
     <string name="action_add">Введите название заметки</string>
     <string name="action_ok">OK</string>
     <string name="date_text">01.01.2001</string>
+    <string name="title_edit_text_name">Введите название заметки</string>
+    <string name="action_edit">Переименовать</string>
+    <string name="action_del">Удалить</string>
 </resources>
